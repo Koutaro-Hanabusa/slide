@@ -1,17 +1,34 @@
 "use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ModeToggle } from "./mode-toggle";
+import { cn } from "@/lib/utils";
 
 export default function Header() {
-	const links = [{ to: "/", label: "Home" }] as const;
+	const pathname = usePathname();
+	const links = [
+		{ to: "/", label: "Home" },
+		{ to: "/slide", label: "Basic Slides" },
+		{ to: "/slide/advanced", label: "Advanced Slides" },
+	] as const;
 
 	return (
 		<div>
 			<div className="flex flex-row items-center justify-between px-2 py-1">
 				<nav className="flex gap-4 text-lg">
 					{links.map(({ to, label }) => {
+						const isActive = pathname === to;
 						return (
-							<Link key={to} href={to}>
+							<Link
+								key={to}
+								href={to}
+								className={cn(
+									"transition-colors hover:text-foreground/80",
+									isActive
+										? "text-foreground font-semibold"
+										: "text-foreground/60",
+								)}
+							>
 								{label}
 							</Link>
 						);
